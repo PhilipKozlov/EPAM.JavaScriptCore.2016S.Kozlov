@@ -32,8 +32,13 @@ function GetType(obj){
 	for (var i = 0; i < numOfTypes; i++){
 			var funcName = funcBaseName + (i + 1);
 			// if type-specific function is defined return appropriate type
-			if (obj[funcName]){
+			try{
+				// if function call fails - function is not defined.
+				obj[funcName]();
 				return i + 1;
+			}
+			catch(ex){
+				
 			}
 		}
 }

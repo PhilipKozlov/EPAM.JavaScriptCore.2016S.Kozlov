@@ -18,8 +18,11 @@ function Sum(){
 			var funcName = funcBaseName + (j + 1);
 			var obj = data[i];
 			// if type-specific function is defined calculate sum of count
-			if (obj[funcName]){
+			try{
 				countSum[j] += obj[funcName]();
+			}
+			catch(ex){
+				
 			}
 		}
 	}
