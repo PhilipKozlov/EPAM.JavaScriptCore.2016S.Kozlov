@@ -1,7 +1,6 @@
-// my function will be executed when page is fully loaded
-window.onload = function(){
-	// loop through array and print it`s elements on the console
-	for (var i =0; i < data.length; i++){
+// loop through array and print it`s elements on the console
+function Log(){
+	for (var i = 0; i < data.length; i++){
 		console.log("data[" + i + "] = " + printString(data[i]));
 	}
 }
