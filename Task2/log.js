@@ -13,18 +13,15 @@ function Sum(){
 	var countSum = CreateEmptyArray();
 	// loop through array and calculate the sum of count for each type
 	for (var i = 0; i < data.length; i++){
-		// loop through all types
-		for (var j = 0; j < numOfTypes; j++){
-			var funcName = funcBaseName + (j + 1);
-			var obj = data[i];
-			// if type-specific function is defined calculate sum of count
-			try{
-				countSum[j] += obj[funcName]();
+		var obj = data[i];
+		// get object functions
+		var func = Object.getOwnPropertyNames(obj).filter(function (p) {
+				return typeof obj[p] === 'function';
 			}
-			catch(ex){
-				
-			}
-		}
+		);
+		// get last character of function name	
+		var index = func[0].substr(func[0].length - 1);
+		countSum[index-1] += obj[funcBaseName + index]();
 	}
 	Print(countSum);
 }
