@@ -1,0 +1,41 @@
+body{
+	width:860px;
+	margin:0 auto;
+	overflow:hidden;
+}
+.block, .buttons{
+	float:left;
+	min-height:300px;
+}
+.block{
+	width:636px;
+	border:1px solid black;
+	overflow:hidden;
+}
+.buttons{
+	width:150px;
+}
+.button{
+	width:100px;
+	height:25px;
+	background-color:white;
+	margin:5px;
+	border:1px solid gray;
+	cursor:pointer;
+}
+.tile{
+	float:left;
+	width:50px;
+	height:50px;
+	border:1px solid gray;
+	margin:.5px;
+}
+.text{
+	text-align:center;
+}
+.disabled{
+	cursor:default;
+}
+.enabled{
+	cursor:pointer;
+}
