@@ -12,16 +12,12 @@ function Sum(){
 	// sum of all counts for each object type
 	var countSum = CreateEmptyArray();
 	// loop through array and calculate the sum of count for each type
-	for (var i = 0; i < data.length; i++){
-		var obj = data[i];
-		// get object functions
-		var func = Object.getOwnPropertyNames(obj).filter(function (p) {
-				return typeof obj[p] === 'function';
-			}
-		);
-		// get last character of function name	
-		var index = func[0].substr(func[0].length - 1);
-		countSum[index-1] += obj[funcBaseName + index]();
+	for (var j = 0; j < numOfTypes; j++){
+		for (var i = 0; i < data.length; i++){
+			var obj = data[i];
+			var f = obj[funcBaseName + (j + 1)] || function(){return 0;};
+			countSum[j] += f.call(obj);
+		}
 	}
 	Print(countSum);
 }
