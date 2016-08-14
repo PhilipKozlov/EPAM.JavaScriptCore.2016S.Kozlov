@@ -1,0 +1,120 @@
+.container{
+}
+.content{
+	position:fixed;
+	top: 50%;
+	left: 50%;
+	margin:0 auto;
+	border: 2px solid lightgray;
+	width:1000px;
+	margin-top: -250px;
+	margin-left:-500px;
+}
+.play-field{
+	float:left;
+	margin-right:0;
+	margin-left:194px;
+	overflow:hidden;
+	border: 2px solid lightgray;
+	margin-top:50px;
+	margin-bottom:25px;
+}
+.resource-field, .action-field{
+	float:left;
+}
+.resource-field{
+	margin-top:5px;
+	margin-bottom:5px;
+	height:400px;
+}
+.action-field{
+	width:400px;
+	height:400px;
+	border: 1px solid lightgray;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.buttons{
+	display:block;
+	overflow:hidden;
+	height:100%;
+	margin:0;
+	margin-top:20px;
+}
+.counter{
+	width:100px;
+	height:100px;
+	margin:5px;
+	margin-top:0;
+	margin-bottom:0;
+	
+	position:relative;
+}
+.counter-bottom {
+	width:100px;
+	height:100px;
+	margin:5px;
+	margin-top:0;
+	margin-bottom:0;
+	top:355px;
+	position:absolute;
+}
+.counter-cheese{
+	background-image: url("../images/cheese.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	border: 1px solid lightgray;
+}
+.counter-cherry{
+	background-image: url("../images/cherry.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	border: 1px solid lightgray;
+}
+.counter-orange{
+	background-image: url("../images/orange.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	border: 1px solid lightgray;
+}
+.counter-pumpkin{
+	background-image: url("../images/pumpkin.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	border: 1px solid lightgray;
+}
+.resource{
+	width:64px;
+	height:64px;
+	cursor:pointer;
+}
+.bomb{
+	width:64px;
+	height:64px;
+}
+.text{
+    position: absolute;
+    bottom: 0;
+    right: 48%;
+	margin:0;
+}
+.button-green{
+	color:white;
+	background-color:green;
+	border: 1px solid green;
+	border-radius:3px;
+	width:100px;
+	height:30px;
+	cursor:pointer;
+	margin-left:40%;
+}
+.button-orange{
+	color:green;
+	background-color:orange;
+	border: 1px solid green;
+	border-radius:3px;
+	width:100px;
+	height:30px;
+	cursor:pointer;
+	margin-left:40%;
+}
