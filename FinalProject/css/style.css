@@ -52,7 +52,7 @@
 	position:relative;
 }
 .counter-bottom {
-	top:355px;
+	top:73%;
 	position:absolute;
 }
 .counter-cherry, .counter-cheese, .counter-orange, .counter-pumpkin{
@@ -93,6 +93,9 @@
 }
 .bomb{
 	background-image: url("../images/bomb.png");
+	cursor:default;
+}
+.disabled{
 	cursor:default;
 }
 .text{
