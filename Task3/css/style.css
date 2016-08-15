@@ -3,6 +3,11 @@ body{
 	margin:0 auto;
 	overflow:hidden;
 }
+p{
+	margin:0;
+	margin-top:5px;
+	text-align:center;
+}
 .block, .buttons{
 	float:left;
 	min-height:300px;
@@ -34,6 +39,7 @@ body{
 	text-align:center;
 }
 .disabled{
+	color:lightgray;
 	cursor:default;
 }
 .red{
