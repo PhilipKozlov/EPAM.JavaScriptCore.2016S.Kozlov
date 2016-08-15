@@ -11,9 +11,10 @@ $(function (){
 	var $btnReset = $('<button type="button" class="button">Reset</button>');
 
 	// appends buttons to html
-	$btnGenerate.appendTo($(".buttons"));
-	$btnSetColor.appendTo($(".buttons"));
-	$btnReset.appendTo($(".buttons"));
+	var $buttons = $(".buttons");
+	$btnGenerate.appendTo($buttons);
+	$btnSetColor.appendTo($buttons);
+	$btnReset.appendTo($buttons);
 	
 	// disable Set Color and Reset buttons
 	DisableButton($btnSetColor);
@@ -37,14 +38,15 @@ $(function (){
 	$btnSetColor.on("click", function(){
 		var $divs = $(".tile");
 		$.each($divs, function (div) {
-			if ($(this).text() > 25){
-				$(this).css('background','#4caf50')
+			var $this = $(this);
+			if ($this.text() > 25){
+				$this.css('background','#4caf50')
 			}
-			if ($(this).text() > 50){
-				$(this).css('background','#ff9800')
+			if ($this.text() > 50){
+				$this.css('background','#ff9800')
 			}
-			if ($(this).text() > 75){
-				$(this).css('background','#f44336')
+			if ($this.text() > 75){
+				$this.css('background','#f44336')
 			}
 		});
 		// disable button Set Color
