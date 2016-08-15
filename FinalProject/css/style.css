@@ -41,56 +41,59 @@
 	margin:0;
 	margin-top:20px;
 }
-.counter{
+.counter, .counter-bottom{
 	width:100px;
 	height:100px;
 	margin:5px;
 	margin-top:0;
 	margin-bottom:0;
-	
+}
+.counter{
 	position:relative;
 }
 .counter-bottom {
-	width:100px;
-	height:100px;
-	margin:5px;
-	margin-top:0;
-	margin-bottom:0;
 	top:355px;
 	position:absolute;
 }
-.counter-cheese{
-	background-image: url("../images/cheese.png");
+.counter-cherry, .counter-cheese, .counter-orange, .counter-pumpkin{
 	background-repeat: no-repeat;
 	background-position: center;
 	border: 1px solid lightgray;
+}
+.counter-cheese{
+	background-image: url("../images/cheese.png");
 }
 .counter-cherry{
 	background-image: url("../images/cherry.png");
-	background-repeat: no-repeat;
-	background-position: center;
-	border: 1px solid lightgray;
 }
 .counter-orange{
 	background-image: url("../images/orange.png");
-	background-repeat: no-repeat;
-	background-position: center;
-	border: 1px solid lightgray;
 }
 .counter-pumpkin{
 	background-image: url("../images/pumpkin.png");
-	background-repeat: no-repeat;
-	background-position: center;
-	border: 1px solid lightgray;
 }
-.resource{
+.resource, .cherry, .orange, .cheese, .pumpkin, .bomb{
+	position:absolute;
+	display:none;
 	width:64px;
 	height:64px;
 	cursor:pointer;
 }
+.cheese{
+	background-image: url("../images/cheese.png");
+}
+.cherry{
+	background-image: url("../images/cherry.png");
+}
+.orange{
+	background-image: url("../images/orange.png");
+}
+.pumpkin{
+	background-image: url("../images/pumpkin.png");
+}
 .bomb{
-	width:64px;
-	height:64px;
+	background-image: url("../images/bomb.png");
+	cursor:default;
 }
 .text{
     position: absolute;
@@ -98,9 +101,7 @@
     right: 48%;
 	margin:0;
 }
-.button-green{
-	color:white;
-	background-color:green;
+.button-green, .button-orange{
 	border: 1px solid green;
 	border-radius:3px;
 	width:100px;
@@ -108,13 +109,11 @@
 	cursor:pointer;
 	margin-left:40%;
 }
+.button-green{
+	color:white;
+	background-color:green;
+}
 .button-orange{
 	color:green;
 	background-color:orange;
-	border: 1px solid green;
-	border-radius:3px;
-	width:100px;
-	height:30px;
-	cursor:pointer;
-	margin-left:40%;
 }
