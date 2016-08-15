@@ -36,6 +36,12 @@ body{
 .disabled{
 	cursor:default;
 }
-.enabled{
-	cursor:pointer;
+.red{
+	background:#f44336;
+}
+.green{
+	background:#4caf50;
+}
+.orange{
+	background:#ff9800;
 }
