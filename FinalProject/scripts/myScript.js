@@ -1,14 +1,26 @@
 $(function (){
-	var array = ["images/bomb.png","images/cheese.png","images/cherry.png","images/orange.png","images/pumpkin.png"];
+	// array of resources
+	var array = ['cheese','cherry','orange','pumpkin'];
 	// counters
 	var cheeseCounter = 0;
 	var cherryCounter = 0;
 	var orangeCounter = 0;
 	var pumpkinCounter = 0;
-	
-	// handle
-	var handle;
+	// handles
+	var resourceHandle;
 	var bombHandle;
+	// resource size
+	var resSize = 64;
+	// field where resources will appear
+	var $actionField = $('.action-field');
+	// bomb display time in ms
+	var bombTimeToLive = 2000;
+	// resource display time in ms
+	var resourceTimeToLive = 1700;
+	// resource frequency in ms
+	var resourceFrequency = 500;
+	// bomb frequency in ms
+	var bombFrequency = 5000;
 	
 	// initial counter state
 	var initState = '<p class="text">-</p>';
@@ -22,168 +34,129 @@ $(function (){
 	$counter.html(initState);
 	
 	//button
-	var $button = $('<button type="button">Start</button>');
-	$button.addClass("button-green");
-	$button.appendTo($(".buttons"));
-	$button.on("click", function(){
-		if ($(this).text() == "Start"){
-			$(".resource").fadeIn(function(){
+	var $button = $('#start');
+	$button.addClass('button-green');
+	$button.on('click', function(){
+		var $this = $(this);
+		var $text = $this.text();
+		if ($text == 'Start'){
+			$('.resource').fadeIn(function(){
 				$(this).remove();
 			});
-			$(".bomb").fadeIn(function(){
-				$(this).remove();
-			});
-			$(this).text("Stop");
-			$(this).removeClass("button-green");
-			$(this).addClass("button-orange");
-			handle = setTimeout(makeDiv, 500);
-			bombHandle = setTimeout(makeBomb, 5000);
-
+			$this.text('Stop');
+			$this.removeClass('button-green');
+			$this.addClass('button-orange');
+			resourceHandle = setTimeout(MakeResource, resourceFrequency);
+			bombHandle = setTimeout(MakeBomb, bombFrequency);
 		}
 		else{
-			clearTimeout(handle);
+			clearTimeout(resourceHandle);
 			clearTimeout(bombHandle);
-			$(this).text("Start");
-			$(this).removeClass("button-orange");
-			$(this).addClass("button-green");
-			
-			$(".resource").stop(false,false);
-			$(".bomb").stop(false,false);
+			$this.text('Start');
+			$this.removeClass('button-orange');
+			$this.addClass('button-green');
+			$('.resource').stop(false,false);
 		}
 	});
 	
-	function makeBomb(){
-		var divsize = 64;
-		var $newdiv = $('<div>');
-		$newdiv.css({
-			'background-image':'url(' + array[0] + ')'
-		});  
-		$newdiv.addClass('bomb');
-		
-		$newdiv.on('mouseover', function(){
-			$(this).remove();
-			var rnd = random(1,5);
-			switch(rnd){
-				case 1: var $temp = $('.counter-cheese');
-						cheeseCounter=0;
-						$temp.html('<p class="text">-</p>');
-						break;
-				case 2: var $temp = $('.counter-cherry');
-						cherryCounter=0;
-						$temp.html('<p class="text">-</p>');
-						break;
-				case 3: var $temp = $('.counter-orange');
-						orangeCounter=0;
-						$temp.html('<p class="text">-</p>');
-						break;
-				case 4: var $temp = $('.counter-pumpkin');
-						pumpkinCounter=0;
-						$temp.html('<p class="text">-</p>');
-						break;
-			}
-		});
-		
-		var posx = random($('.action-field').position().left, $('.action-field').position().left + 100 - divsize);
-		var posy = random($('.action-field').position().top, $('.action-field').position().top + 20 + $('.action-field').height() - 2*divsize);
-
-		bombHandle = setTimeout(makeBomb, 5000);
-		
-		$newdiv.css({
-			'position':'absolute',
-			'left':posx+'px',
-			'top':posy+'px',
-			'display':'none'
-		}).appendTo('.action-field').fadeIn(2000, function(){
+	// creates a new resource
+	function MakeResource(){
+		var divtype = random(0,3);
+		var $resource = $('<div>');
+		$resource.addClass('resource');
+		$resource.addClass(array[divtype]);
+		var position = GeneratePosition();
+		$resource.css({
+			'left':position[0]+'px',
+			'top':position[1]+'px'
+		}).appendTo('.action-field').fadeIn(resourceTimeToLive, function(){
 		  $(this).remove();
-		  var rnd = random(1,5);
-			switch(rnd){
-				case 1: var $temp = $('.counter-cheese');
-						cheeseCounter-=10;
-						var res = cheeseCounter;
-						if (cheeseCounter <= 0){
-							res = '-';
-							cheeseCounter=0;
-						}
-						$temp.html('<p class="text">' + res + '</p>');
+		});
+		$resource.on('click', function(){
+			var $this = $(this);
+			switch(divtype){
+				case 0: cheeseCounter++;
+						$('.counter-cheese').html('<p class="text">' + cheeseCounter + '</p>');
 						break;
-				case 2: var $temp = $('.counter-cherry');
-						cherryCounter-=10;
-						var res = cheeseCounter;
-						if (cherryCounter <= 0){
-							res = '-';
-							cherryCounter=0;
-						}
-						$temp.html('<p class="text">' + res + '</p>');
+				case 1: cherryCounter++;
+						$('.counter-cherry').html('<p class="text">' + cherryCounter + '</p>');
 						break;
-				case 3: var $temp = $('.counter-orange');
-						orangeCounter-=10;
-						var res = cheeseCounter;
-						if (orangeCounter <= 0){
-							res = '-';
-							orangeCounter=0;
-						}
-						$temp.html('<p class="text">' + res + '</p>');
+				case 2: orangeCounter++;
+						$('.counter-orange').html('<p class="text">' + orangeCounter + '</p>');
 						break;
-				case 4: var $temp = $('.counter-pumpkin');
-						pumpkinCounter-=10;
-						var res = cheeseCounter;
-						if (pumpkinCounter <= 0){
-							res = '-';
-							pumpkinCounter=0;
-						}
-						$temp.html('<p class="text">' + res + '</p>');
+				case 3: pumpkinCounter++;
+						$('.counter-pumpkin').html('<p class="text">' + pumpkinCounter + '</p>');
 						break;
 			}
-		}); 
+			$this.remove();
+		});
+		resourceHandle = setTimeout(MakeResource, resourceFrequency);
 	}
 	
-	function makeDiv(){
-		var divsize = 64;
-		// div type
-		var divtype = random(1,4);
-		var $newdiv = $('<div>');
-		$newdiv.css({
-			'background-image':'url(' + array[divtype] + ')'
-		});  
-		$newdiv.addClass('resource');
-		
-		$newdiv.on('click', function(){
-			switch(divtype){
-				case 1: cheeseCounter++;
-						var $temp = $('.counter-cheese');
-						$temp.html('<p class="text">' + cheeseCounter + '</p>');
-						$(this).remove();
-						break;
-				case 2: cherryCounter++;
-						var $temp = $('.counter-cherry');
-						$temp.html('<p class="text">' + cherryCounter + '</p>');
-						$(this).remove();
-						break;
-				case 3: orangeCounter++;
-						var $temp = $('.counter-orange');
-						$temp.html('<p class="text">' + orangeCounter + '</p>');
-						$(this).remove();
-						break;
-				case 4: pumpkinCounter++;
-						var $temp = $('.counter-pumpkin');
-						$temp.html('<p class="text">' + pumpkinCounter + '</p>');
-						$(this).remove();
-						break;
-			}
-		});
-		
-		var posx = random($('.action-field').position().left, $('.action-field').position().left + 100 - divsize);
-		var posy = random($('.action-field').position().top, $('.action-field').position().top + 20 + $('.action-field').height() - 2*divsize);
-		
-		handle = setTimeout(makeDiv, 500);
-		
-		$newdiv.css({
-			'position':'absolute',
-			'left':posx+'px',
-			'top':posy+'px',
-			'display':'none'
-		}).appendTo('.action-field').fadeIn(1700, function(){
-		  $(this).remove();
+	// creates a new bomb
+	function MakeBomb(){
+		var $bomb = $('<div>');
+		$bomb.addClass('resource');
+		$bomb.addClass('bomb');
+		var position = GeneratePosition();
+		$bomb.css({
+			'left':position[0]+'px',
+			'top':position[1]+'px'
+		}).appendTo('.action-field').fadeIn(bombTimeToLive, function(){
+			Explode($(this));
 		}); 
+		bombHandle = setTimeout(MakeBomb, bombFrequency);
+	}
+
+	// generate random position within a div
+	function GeneratePosition(){
+		var posx = random($actionField.position().left, $actionField.position().left + $actionField.width() - resSize);
+		var posy = random($actionField.position().top, $actionField.position().top + $actionField.height() - resSize);
+		var position = [posx, posy];
+		return position;
+	}
+	
+	// explodes the bomb and negates random resource by 10 points
+	function Explode($bomb){
+		$bomb.remove();
+		var rnd = random(0,3);
+		switch(rnd){
+			case 0: var $temp = $('.counter-cheese');
+					cheeseCounter-=10;
+					var res = cheeseCounter;
+					if (cheeseCounter <= 0){
+						res = '-';
+						cheeseCounter=0;
+					}
+					$temp.html('<p class="text">' + res + '</p>');
+					break;
+			case 1: var $temp = $('.counter-cherry');
+					cherryCounter-=10;
+					var res = cheeseCounter;
+					if (cherryCounter <= 0){
+						res = '-';
+						cherryCounter=0;
+					}
+					$temp.html('<p class="text">' + res + '</p>');
+					break;
+			case 2: var $temp = $('.counter-orange');
+					orangeCounter-=10;
+					var res = cheeseCounter;
+					if (orangeCounter <= 0){
+						res = '-';
+						orangeCounter=0;
+					}
+					$temp.html('<p class="text">' + res + '</p>');
+					break;
+			case 3: var $temp = $('.counter-pumpkin');
+					pumpkinCounter-=10;
+					var res = cheeseCounter;
+					if (pumpkinCounter <= 0){
+						res = '-';
+						pumpkinCounter=0;
+					}
+					$temp.html('<p class="text">' + res + '</p>');
+					break;
+		}
 	}
 });
