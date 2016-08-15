@@ -3,19 +3,12 @@ $(function (){
 	var numOfTiles = 50;
 	var startValue = 1;
 	var endValue = 100;
-	
 	// Generate button
 	var $btnGenerate = $('#generate');
 	// Set Color button
 	var $btnSetColor = $('#setColor');
 	// Reset button
 	var $btnReset = $('#reset');
-	
-	// appends buttons to html
-	var $buttons = $('.buttons');
-	$btnGenerate.appendTo($buttons);
-	$btnSetColor.appendTo($buttons);
-	$btnReset.appendTo($buttons);
 	// disable Set Color and Reset buttons
 	DisableButton($btnSetColor);
 	DisableButton($btnReset);
