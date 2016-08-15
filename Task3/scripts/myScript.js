@@ -12,9 +12,15 @@ $(function (){
 	// disable Set Color and Reset buttons
 	DisableButton($btnSetColor);
 	DisableButton($btnReset);
-	
 	// on Generate button click display 50 tiles
-	$btnGenerate.on('click', function(){
+	$btnGenerate.on('click', GenerateTiles);
+	// on Set Color button click change tiles color
+	$btnSetColor.on('click', SetColor);
+	// on Reset button click remove all previously generated tiles from html
+	$btnReset.on('click', Reset);
+	
+	// generate 50 tiles
+	function GenerateTiles(){
 		for (var i = 0; i < numOfTiles; i++){
 			var $div = $('<div class="tile"></div>');
 			var number = random(startValue, endValue);
@@ -23,12 +29,12 @@ $(function (){
 		}
 		// enable/disable appropriate buttons
 		DisableButton($btnGenerate);
-		EnableButton($btnSetColor);
-		EnableButton($btnReset);
-	});
+		EnableButton($btnSetColor, SetColor);
+		EnableButton($btnReset, Reset);
+	}
 	
-	// on Set Color button click change tiles color
-	$btnSetColor.on('click', function(){
+	// set tiles color
+	function SetColor(){
 		var $divs = $('.tile');
 		$.each($divs, function(div){
 			var $this = $(this);
@@ -45,24 +51,25 @@ $(function (){
 		});
 		// disable button Set Color
 		DisableButton($btnSetColor);
-	});
+	}
 	
-	// on Reset button click remove all previously generated tiles from html
-	$btnReset.on('click', function(){
+	// remove all tiles
+	function Reset(){
 		$('.block').empty();
 		// enable/disable appropriate buttons
-		EnableButton($btnGenerate);
+		EnableButton($btnGenerate, GenerateTiles);
 		DisableButton($btnSetColor);
 		DisableButton($btnReset);
-	});
+	}
 	
 	function DisableButton($btn){
 		$btn.addClass('disabled');
-		$btn.prop('disabled', true);
+		$btn.off();
 	}
 	
-	function EnableButton($btn){
+	function EnableButton($btn, $function){
 		$btn.removeClass('disabled');
-		$btn.prop('disabled', false);
+		$btn.off();
+		$btn.on('click', $function);
 	}
 });
