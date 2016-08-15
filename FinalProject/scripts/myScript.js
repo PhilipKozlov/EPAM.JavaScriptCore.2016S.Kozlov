@@ -1,11 +1,6 @@
 $(function (){
-	// array of resources
-	var array = ['cheese','cherry','orange','pumpkin'];
-	// counters
-	var cheeseCounter = 0;
-	var cherryCounter = 0;
-	var orangeCounter = 0;
-	var pumpkinCounter = 0;
+	// resources
+	var resources = [{name : 'cheese', counter : 0}, {name : 'cherry', counter : 0}, {name : 'orange', counter : 0}, {name : 'pumpkin', counter : 0}]
 	// handles
 	var resourceHandle;
 	var bombHandle;
@@ -22,25 +17,17 @@ $(function (){
 	// bomb frequency in ms
 	var bombFrequency = 5000;
 	
-	// initial counter state
-	var initState = '<p class="text">-</p>';
-	var $counter = $('.counter-cheese');
-	$counter.html(initState);
-	$counter = $('.counter-cherry');
-	$counter.html(initState);
-	$counter = $('.counter-orange');
-	$counter.html(initState);
-	$counter = $('.counter-pumpkin');
-	$counter.html(initState);
-	
 	//button
 	var $button = $('#start');
 	$button.addClass('button-green');
 	$button.on('click', function(){
 		var $this = $(this);
 		var $text = $this.text();
+		var $resources = $('.resource');
 		if ($text == 'Start'){
-			$('.resource').fadeIn(function(){
+			$resources.removeClass('disabled');
+			$resources.off('click', EmptyEvent);
+			$resources.fadeIn(function(){
 				$(this).remove();
 			});
 			$this.text('Stop');
@@ -55,41 +42,40 @@ $(function (){
 			$this.text('Start');
 			$this.removeClass('button-orange');
 			$this.addClass('button-green');
-			$('.resource').stop(false,false);
+			$resources.stop(false, false);
+			$resources.addClass('disabled');
+			$resources.on('click', EmptyEvent);
+			LastToFirst($resources);
 		}
 	});
 	
+	// suppresses execution of queued up event handlers
+	function EmptyEvent(event){
+		event.stopImmediatePropagation();
+	}
+	
+	// places last event handler at the front of the queue
+	function LastToFirst($resources){
+		$.each($resources, function(div){
+			var eventList = $._data($(this)[0], 'events');
+			eventList.click.unshift(eventList.click.pop());
+		});
+	}
+	
 	// creates a new resource
 	function MakeResource(){
-		var divtype = random(0,3);
+		var rnd = random(0, resources.length - 1);
 		var $resource = $('<div>');
 		$resource.addClass('resource');
-		$resource.addClass(array[divtype]);
+		$resource.addClass(resources[rnd].name);
 		var position = GeneratePosition();
 		$resource.css({
-			'left':position[0]+'px',
-			'top':position[1]+'px'
+			'left' : position[0] + 'px',
+			'top' : position[1] + 'px'
 		}).appendTo('.action-field').fadeIn(resourceTimeToLive, function(){
-		  $(this).remove();
+			$(this).remove();
 		});
-		$resource.on('click', function(){
-			var $this = $(this);
-			switch(divtype){
-				case 0: cheeseCounter++;
-						$('.counter-cheese').html('<p class="text">' + cheeseCounter + '</p>');
-						break;
-				case 1: cherryCounter++;
-						$('.counter-cherry').html('<p class="text">' + cherryCounter + '</p>');
-						break;
-				case 2: orangeCounter++;
-						$('.counter-orange').html('<p class="text">' + orangeCounter + '</p>');
-						break;
-				case 3: pumpkinCounter++;
-						$('.counter-pumpkin').html('<p class="text">' + pumpkinCounter + '</p>');
-						break;
-			}
-			$this.remove();
-		});
+		$resource.on('click', {resource : rnd}, IncrementResource);
 		resourceHandle = setTimeout(MakeResource, resourceFrequency);
 	}
 	
@@ -100,63 +86,39 @@ $(function (){
 		$bomb.addClass('bomb');
 		var position = GeneratePosition();
 		$bomb.css({
-			'left':position[0]+'px',
-			'top':position[1]+'px'
-		}).appendTo('.action-field').fadeIn(bombTimeToLive, function(){
-			Explode($(this));
-		}); 
+			'left' : position[0] + 'px',
+			'top' : position[1] + 'px'
+		}).appendTo('.action-field').fadeIn(bombTimeToLive, Explode); 
 		bombHandle = setTimeout(MakeBomb, bombFrequency);
 	}
 
 	// generate random position within a div
 	function GeneratePosition(){
-		var posx = random($actionField.position().left, $actionField.position().left + $actionField.width() - resSize);
-		var posy = random($actionField.position().top, $actionField.position().top + $actionField.height() - resSize);
-		var position = [posx, posy];
+		var posX = random($actionField.position().left, $actionField.position().left + $actionField.width() - resSize);
+		var posY = random($actionField.position().top, $actionField.position().top + $actionField.height() - resSize);
+		var position = [posX, posY];
 		return position;
 	}
 	
-	// explodes the bomb and negates random resource by 10 points
-	function Explode($bomb){
-		$bomb.remove();
-		var rnd = random(0,3);
-		switch(rnd){
-			case 0: var $temp = $('.counter-cheese');
-					cheeseCounter-=10;
-					var res = cheeseCounter;
-					if (cheeseCounter <= 0){
-						res = '-';
-						cheeseCounter=0;
-					}
-					$temp.html('<p class="text">' + res + '</p>');
-					break;
-			case 1: var $temp = $('.counter-cherry');
-					cherryCounter-=10;
-					var res = cheeseCounter;
-					if (cherryCounter <= 0){
-						res = '-';
-						cherryCounter=0;
-					}
-					$temp.html('<p class="text">' + res + '</p>');
-					break;
-			case 2: var $temp = $('.counter-orange');
-					orangeCounter-=10;
-					var res = cheeseCounter;
-					if (orangeCounter <= 0){
-						res = '-';
-						orangeCounter=0;
-					}
-					$temp.html('<p class="text">' + res + '</p>');
-					break;
-			case 3: var $temp = $('.counter-pumpkin');
-					pumpkinCounter-=10;
-					var res = cheeseCounter;
-					if (pumpkinCounter <= 0){
-						res = '-';
-						pumpkinCounter=0;
-					}
-					$temp.html('<p class="text">' + res + '</p>');
-					break;
+	// incremet resource counter
+	function IncrementResource(event){
+		var rnd = event.data.resource;
+		resources[rnd].counter++;
+		$('.counter-' + resources[rnd].name).html('<p class="text">' + resources[rnd].counter + '</p>');
+		$(this).remove();
+	}
+	
+	// explode the bomb and negate random resource by 10 points
+	function Explode(){
+		$(this).remove();
+		var rnd = random(0, resources.length - 1);
+		$counter = $('.counter, .counter-bottom').eq(rnd)
+		resources[rnd].counter -= 10;
+		var res = resources[rnd].counter;
+		if (resources[rnd].counter <= 0){
+			resources[rnd].counter = 0;
+			res = '-';
 		}
+		$counter.html('<p class="text">' + res + '</p>');
 	}
 });
