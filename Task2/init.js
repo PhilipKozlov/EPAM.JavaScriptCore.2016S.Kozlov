@@ -7,12 +7,11 @@ var funcBaseName = "getCount";
 
 // creates objects
 function CreateObjects(numOfObjects, maxCountValue){
-
 	for (var i = 0; i < numOfObjects; i++){
 		// object "type"
-		var rndType = random(1,numOfTypes);
+		var rndType = random(1, numOfTypes);
 		// object count value
-		var rndCount = random(1,maxCountValue);
+		var rndCount = random(1, maxCountValue);
 		// object
 		var element = {};
 		element.count = rndCount;

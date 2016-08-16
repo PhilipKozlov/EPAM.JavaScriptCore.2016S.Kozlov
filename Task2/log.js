@@ -15,7 +15,7 @@ function Sum(){
 	for (var j = 0; j < numOfTypes; j++){
 		for (var i = 0; i < data.length; i++){
 			var obj = data[i];
-			var f = obj[funcBaseName + (j + 1)] || function(){return 0;};
+			var f = obj[funcBaseName + (j + 1)] || function(){ return 0; };
 			countSum[j] += f.call(obj);
 		}
 	}
