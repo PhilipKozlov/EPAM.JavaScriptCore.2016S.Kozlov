@@ -1,30 +1,42 @@
 $(function (){
 	// resources
-	var resources = [{name : 'cheese', counter : 0}, {name : 'cherry', counter : 0}, {name : 'orange', counter : 0}, {name : 'pumpkin', counter : 0}]
+	var resources = [
+	{name : 'cheese', counter : 0}, 
+	{name : 'cherry', counter : 0}, 
+	{name : 'orange', counter : 0}, 
+	{name : 'pumpkin', counter : 0}]
+	// difficulty levels
+	var difficultyLevels = [
+	{name : 'Easy', value : 2100}, 
+	{name : 'Normal', value : 1400}, 
+	{name : 'Hard', value : 700}]
+	// settings
+	var settings = {
+		difficultyLevel : difficultyLevels[0],
+		bombTimeToLive : 5000,
+		resourceFrequency : 500,
+		bombFrequency : 5000
+	}
 	// handles
 	var resourceHandle;
 	var bombHandle;
-	// resource size
+	// resource size in px
 	var resSize = 64;
 	// field where resources will appear
 	var $actionField = $('.action-field');
-	// bomb display time in ms
-	var bombTimeToLive = 2000;
-	// resource display time in ms
-	var resourceTimeToLive = 1700;
-	// resource frequency in ms
-	var resourceFrequency = 500;
-	// bomb frequency in ms
-	var bombFrequency = 5000;
+	// button Start
+	var $btnStart = $('#start');
+	// button Reset
+	var $btnReset = $('#reset');
 	
-	//button
-	var $button = $('#start');
-	$button.addClass('button-green');
-	$button.on('click', function(){
+	// registers onclick for Start button
+	$btnStart.addClass('button-green');
+	$btnStart.on('click', function(){
 		var $this = $(this);
 		var $text = $this.text();
 		var $resources = $('.resource');
 		if ($text == 'Start'){
+			$btnReset.prop('disabled', false);
 			$resources.removeClass('disabled');
 			$resources.off('click', EmptyEvent);
 			$resources.fadeIn(function(){
@@ -33,8 +45,8 @@ $(function (){
 			$this.text('Stop');
 			$this.removeClass('button-green');
 			$this.addClass('button-orange');
-			resourceHandle = setTimeout(MakeResource, resourceFrequency);
-			bombHandle = setTimeout(MakeBomb, bombFrequency);
+			resourceHandle = setTimeout(MakeResource, settings.resourceFrequency);
+			bombHandle = setTimeout(MakeBomb, settings.bombFrequency);
 		}
 		else{
 			clearTimeout(resourceHandle);
@@ -48,6 +60,40 @@ $(function (){
 			LastToFirst($resources);
 		}
 	});
+	
+	// registers onclick for Reset button
+	$btnReset.addClass('button-red');
+	$btnReset.on('click', function(){
+		$btnReset.prop('disabled', true);
+		$('.resource').remove();
+		$('.counter, .counter-bottom').html('<p class="text">-</p>');
+		clearTimeout(resourceHandle);
+		clearTimeout(bombHandle);
+		$btnStart.text('Start');
+		$btnStart.removeClass('button-orange');
+		$btnStart.addClass('button-green');
+		for (var i = 0; i < resources.length; i++){
+			resources[i].counter = 0;
+		}
+	});
+	$btnReset.prop('disabled', true);
+	
+	AddDifficultyLevels();
+	
+	function AddDifficultyLevels(){
+		var $difficulty = $('.difficulty');
+		for (var i = 0; i < difficultyLevels.length; i++){
+			var level = difficultyLevels[i];
+			$difficulty.append($('<option>').attr('value', level.value).text(level.name));
+		}
+		$difficulty.on('change', function(){
+			var $text = $('.difficulty option:selected').text();
+			var levels = $.grep(difficultyLevels, function(level){
+				return level.name === $text;
+			});
+			settings.difficultyLevel = levels[0];
+		});
+	}
 	
 	// suppresses execution of queued up event handlers
 	function EmptyEvent(event){
@@ -72,11 +118,11 @@ $(function (){
 		$resource.css({
 			'left' : position[0] + 'px',
 			'top' : position[1] + 'px'
-		}).appendTo('.action-field').fadeIn(resourceTimeToLive, function(){
+		}).appendTo('.action-field').fadeIn(settings.difficultyLevel.value, function(){
 			$(this).remove();
 		});
 		$resource.on('click', {resource : rnd}, IncrementResource);
-		resourceHandle = setTimeout(MakeResource, resourceFrequency);
+		resourceHandle = setTimeout(MakeResource, settings.resourceFrequency);
 	}
 	
 	// creates a new bomb
@@ -88,8 +134,8 @@ $(function (){
 		$bomb.css({
 			'left' : position[0] + 'px',
 			'top' : position[1] + 'px'
-		}).appendTo('.action-field').fadeIn(bombTimeToLive, Explode); 
-		bombHandle = setTimeout(MakeBomb, bombFrequency);
+		}).appendTo('.action-field').fadeIn(settings.bombTimeToLive, Explode); 
+		bombHandle = setTimeout(MakeBomb, settings.bombFrequency);
 	}
 
 	// generate random position within a div
