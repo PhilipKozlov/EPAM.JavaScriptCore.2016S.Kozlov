@@ -104,13 +104,14 @@
     right: 48%;
 	margin:0;
 }
-.button-green, .button-orange{
+.button-green, .button-orange, .button-red{
 	border: 1px solid green;
 	border-radius:3px;
 	width:100px;
 	height:30px;
 	cursor:pointer;
 	margin-left:40%;
+	margin-bottom:10px;
 }
 .button-green{
 	color:white;
@@ -119,4 +120,16 @@
 .button-orange{
 	color:green;
 	background-color:orange;
+}
+.difficulty-field{
+	margin-left:10%;
+	margin-bottom:10px;
+}
+.difficulty-field h3{
+	float:left;
+	overflow:hidden;
+	margin:0;
+}
+.difficulty{
+	float:left;
 }
