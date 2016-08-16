@@ -9,6 +9,8 @@ $(function (){
 	var $btnSetColor = $('#setColor');
 	// Reset button
 	var $btnReset = $('#reset');
+	
+	
 	// disable Set Color and Reset buttons
 	DisableButton($btnSetColor);
 	DisableButton($btnReset);
