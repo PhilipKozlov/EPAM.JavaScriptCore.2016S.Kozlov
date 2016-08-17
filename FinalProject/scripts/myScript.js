@@ -66,7 +66,6 @@ $(function (){
 	
 	// registers onclick for Reset button
 	$btnReset.addClass('button-red');
-	//$btnReset.addClass('disabled');
 	$btnReset.prop('disabled', true);
 	$btnReset.on('click', function(){
 		$btnReset.prop('disabled', true);
