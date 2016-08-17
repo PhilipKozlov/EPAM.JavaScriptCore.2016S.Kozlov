@@ -29,6 +29,8 @@ $(function (){
 	// button Reset
 	var $btnReset = $('#reset');
 	
+	AddDifficultyLevels();
+	
 	// registers onclick for Start button
 	$btnStart.addClass('button-green');
 	$btnStart.on('click', function(){
@@ -37,6 +39,7 @@ $(function (){
 		var $resources = $('.resource');
 		if ($text == 'Start'){
 			$btnReset.prop('disabled', false);
+			$btnReset.addClass('enabled');
 			$resources.removeClass('disabled');
 			$resources.off('click', EmptyEvent);
 			$resources.fadeIn(function(){
@@ -63,8 +66,11 @@ $(function (){
 	
 	// registers onclick for Reset button
 	$btnReset.addClass('button-red');
+	//$btnReset.addClass('disabled');
+	$btnReset.prop('disabled', true);
 	$btnReset.on('click', function(){
 		$btnReset.prop('disabled', true);
+		$btnReset.removeClass('enabled');
 		$('.resource').remove();
 		$('.counter, .counter-bottom').html('<p class="text">-</p>');
 		clearTimeout(resourceHandle);
@@ -76,10 +82,8 @@ $(function (){
 			resources[i].counter = 0;
 		}
 	});
-	$btnReset.prop('disabled', true);
-	
-	AddDifficultyLevels();
-	
+
+	// populates combo box with difficulty levels
 	function AddDifficultyLevels(){
 		var $difficulty = $('.difficulty');
 		for (var i = 0; i < difficultyLevels.length; i++){
