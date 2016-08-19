@@ -2,24 +2,61 @@
 // config{ 
 // 			movementSpeed : how fast zombie moves, in px,
 //			startPosition : zombie initial position on screen,
-// 			finishPosition : finish line position
+// 			finishPosition : finish line position,
+//			$lane : zombie lane that it moves on
 // 		}
 var zombie = function(config){
-	this.obj = {};
-	this.obj.name = '';
-	this.obj.health = 100;
-	this.obj.movementSpeed = config.movementSpeed || 1;
-	this.obj.currentPosition = config.startPosition;
-	this.obj.finishPosition = config.finishPosition;
+	var obj = {};
+	obj.name = '';
+	obj.health = 100;
+	obj.movementSpeed = config.movementSpeed || 1;
+	obj.currentPosition = config.startPosition;
+	obj.finishPosition = config.finishPosition;
+	obj.$lane = config.$lane;
 	
-	this.obj.move = function(){
-		this.currentPosition += this.movementSpeed;
-		if (this.currentPosition >= this.finishPosition){
-			this.die();
+	var isDead = false;
+
+	// creates jQuery zombie
+	obj.create = function(){
+		if (!obj.$zombie){
+			obj.$zombie = $('<div>');
+			obj.$zombie.addClass('zombie');
+			obj.$zombie.addClass(obj.name);
+			obj.$zombie.css({
+				'left' : obj.currentPosition + 'px'
+			});
+			obj.$lane.append(obj.$zombie);
 		}
 	}
 	
-	this.obj.die = function(){
-		// do something
+	obj.move = function(){
+		this.currentPosition += this.movementSpeed;
+		if (this.currentPosition <= this.finishPosition){
+			this.die();
+		}
+		obj.$zombie.css('left', obj.currentPosition + 'px');
 	}
+	
+	obj.die = function(){
+		if (!isDead){
+			isDead = true;
+			obj.$zombie.trigger('death');
+			obj.$zombie.remove();
+		}
+	}
+	
+	// kill zombie without triggering the 'death' event
+	obj.kill = function(){
+		if (!isDead){
+			isDead = true;
+			obj.$zombie.remove();
+		}
+	}
+	
+	// creates custom 'death' event for zombie
+	obj.onDeath = function(func){
+		obj.$zombie.on('death', func);
+	}
+	
+	return obj;
 }
