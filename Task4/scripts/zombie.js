@@ -30,9 +30,9 @@ var zombie = function(config){
 	}
 	
 	obj.move = function(){
-		this.currentPosition += this.movementSpeed;
-		if (this.currentPosition <= this.finishPosition){
-			this.die();
+		obj.currentPosition += obj.movementSpeed;
+		if (obj.currentPosition <= obj.finishPosition){
+			obj.die();
 		}
 		obj.$zombie.css('left', obj.currentPosition + 'px');
 	}
