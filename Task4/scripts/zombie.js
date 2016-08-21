@@ -3,18 +3,19 @@
 // 			movementSpeed : how fast zombie moves, in px,
 //			startPosition : zombie initial position on screen,
 // 			finishPosition : finish line position,
+//			damage : how much health plant loses on zombie`s hit,
 //			$lane : zombie lane that it moves on
 // 		}
 var zombie = function(config){
 	var obj = {};
 	obj.name = '';
 	obj.health = 100;
+	obj.damage = config.damage || 100;
 	obj.movementSpeed = config.movementSpeed || 1;
 	obj.currentPosition = config.startPosition;
 	obj.finishPosition = config.finishPosition;
 	obj.$lane = config.$lane;
-	
-	var isDead = false;
+	obj.isDead = false;
 
 	// creates jQuery zombie
 	obj.create = function(){
@@ -38,8 +39,8 @@ var zombie = function(config){
 	}
 	
 	obj.die = function(){
-		if (!isDead){
-			isDead = true;
+		if (!obj.isDead){
+			obj.isDead = true;
 			obj.$zombie.trigger('death');
 			obj.$zombie.remove();
 		}
@@ -47,9 +48,17 @@ var zombie = function(config){
 	
 	// kill zombie without triggering the 'death' event
 	obj.kill = function(){
-		if (!isDead){
-			isDead = true;
+		if (!obj.isDead){
+			obj.isDead = true;
 			obj.$zombie.remove();
+		}
+	}
+	
+	// hits zombie with plant projectile
+	obj.hit = function(damage){
+		obj.health -= damage;
+		if (obj.health <= 0){
+			obj.kill();
 		}
 	}
 	
