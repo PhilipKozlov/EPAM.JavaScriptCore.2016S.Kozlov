@@ -1,6 +1,10 @@
 body { font-family: Calibri; font-size: 15px; margin: 30px; }
+p{ margin: 0;}
+
+.disabled{ color: lightgray; cursor: default;}
 
 .content { position: relative; }
+.resources { position: relative; width: 900px; margin: 0 auto;}
 .game-over { display: none; margin: 0 auto; width: 900px; text-align: center; color: #f44336; font-size: 21px; font-weight: bold; }
 
 #field { width: 900px; margin: 0 auto; }
@@ -13,3 +17,10 @@ body { font-family: Calibri; font-size: 15px; margin: 30px; }
 .zombie { position: absolute; top: 0; right: 0; }
 .zombie.michael { width: 46px; height: 69px; background-image: url(../img/michael.gif); background-size: cover; }
 .zombie.strong { width: 60px; height: 73px; background-image: url(../img/strong.gif); background-size: cover; }
+
+.plant { position: absolute; top: 0; right: 0; }
+.plant.peashooter { width: 76px; height: 69px; background-image: url(../img/peashooter.gif); background-size: cover; }
+
+.sun { position: absolute; top: 0; right: 0; width: 76px; height: 69px; background-image: url(../img/sun.png); background-size: cover; cursor: pointer;}
+.pea { position: absolute; top: 0; right: 0; width: 24px; height: 24px; background-image: url(../img/pea.png); background-size: cover; margin-top: 10px;}
+
