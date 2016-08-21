@@ -22,7 +22,7 @@ var pea = function(config){
 	
 	obj.move = function(){
 		obj.currentPosition += obj.movementSpeed;
-		if (obj.currentPosition >= obj.$lane.position().left + obj.$lane.width() - 60){
+		if (obj.currentPosition >= obj.$lane.width() - 30){
 			obj.remove();
 		}
 		obj.$pea.css('left', obj.currentPosition + 'px');

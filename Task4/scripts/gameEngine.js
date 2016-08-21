@@ -33,6 +33,7 @@ $(function(){
 	var projectileHandles = [];
 	
 	var $field = $('#field');
+	var $fieldLane = $('.field-line');
 	var $gameOver = $('.game-over');
 	
 	// default configs
@@ -133,7 +134,7 @@ $(function(){
 	
 	// creates a new resource
 	function GenerateResource(){
-		resourceConfig.left = random($field.position().left, $field.width() - 60);
+		resourceConfig.left = random($fieldLane.position().left, $fieldLane.position().left + $field.width() - 60);
 		var resource = new resourceTypes[0](resourceConfig);
 		resource.onClick(function(){
 			resourceCount += resourceIncrement;

@@ -1,8 +1,8 @@
 // sun type
 // config{ 
 //			movementSpeed : how fast sun moves, in px,
-//			leftPosition : sun left position on screen,
-//			topPosition : sun top position on screen,
+//			left : sun left position on screen,
+//			top : sun top position on screen,
 //			$field : area on screen where sun will appear
 // 		}
 var sun = function(config){
