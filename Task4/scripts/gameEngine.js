@@ -26,14 +26,21 @@ $(function(){
 	var zombieMaxTimeout = 2000;
 	var resourceTimeout = 1500;
 	var projectileTimeout = 2500;
+	var agingTimeout = 1000;
 	
 	// time interval for slowing zombies, in ms
-	var slowTime = 2000;
+	var slowTime = 10000;
+	// time interval for aging zombies
+	var agingTime = 10000;
+	// how much heath zombies lose while aging is active
+	var agingDecrement = 1;
+	var explosionDamage = 15;
 	
 	// handles
 	var zombieHandles = [];
 	var resourceHandles = [];
 	var projectileHandles = [];
+	var ageingHandle;
 	
 	var $field = $('#field');
 	var $fieldLane = $('.field-line');
@@ -45,16 +52,24 @@ $(function(){
 	var projectileConfig = { movementSpeed : 20, damage : 25};
 	var resourceConfig = { movementSpeed : 10, $field : $field, top : $field.position().top};
 	
+	// resource requirements to perform certain actions
 	var resourceCount = 0;
 	var resourceIncrement = 25;
 	var resourcesForPlant = 100;
+	var resourcesForExplosion = 50;
+	var resourcesForAging = 50;
 
+	// buttons
 	var $btnReset = $('#btnReset');
 	var $btnStart = $('#btnStart');
 	var $btnSlow = $('#btnSlow');
+	var $btnExplode = $('#btnExplode');
+	var $btnAge = $('#btnAge');
 	$btnStart.on('click', Start);
 	$btnReset.addClass('disabled');
 	$btnSlow.addClass('disabled');
+	$btnExplode.addClass('disabled');
+	$btnAge.addClass('disabled');
 	
 	// starts the game
 	function Start(){
@@ -67,6 +82,10 @@ $(function(){
 		$btnReset.removeClass('disabled');
 		$btnSlow.removeClass('disabled');
 		$btnSlow.on('click', Slow);
+		$btnExplode.on('click', Explode);
+		$btnExplode.removeClass('disabled');
+		$btnAge.on('click', Age);
+		$btnAge.removeClass('disabled');
 	}
 	
 	// resets the game
@@ -226,6 +245,49 @@ $(function(){
 		}
 		$btnSlow.removeClass('disabled');
 		$btnSlow.on('click', Slow);
+	}
+	
+	// damages all the zombies on the field
+	function Explode(){
+		if (resourceCount >= resourcesForExplosion){
+			for (var i = 0; i < zombies.length; i++){
+				zombies[i].hit(explosionDamage);
+			}
+			resourceCount -= resourcesForExplosion;
+			if (resourceCount <= 0){
+				resourceCount = 0;
+			}
+			$('.resources p').text(resourceCount);
+		}
+	}
+	
+	// damages all zombies on the field for a set time interval
+	function Age(){
+		if (resourceCount >= resourcesForAging){
+			AgeHelper();
+			setTimeout(StopAging, agingTime);
+			resourceCount -= resourcesForAging;
+			if (resourceCount <= 0){
+				resourceCount = 0;
+			}
+			$('.resources p').text(resourceCount);
+			$btnAge.addClass('disabled');
+			$btnAge.off();
+		}
+	}
+	
+	function AgeHelper(){
+		for (var i = 0; i < zombies.length; i++){
+			zombies[i].hit(agingDecrement);
+		}
+		ageingHandle = setTimeout(AgeHelper, agingTimeout);
+	}
+	
+	// stops zombies aging
+	function StopAging(){
+		clearTimeout(ageingHandle);
+		$btnAge.removeClass('disabled');
+		$btnAge.on('click', Age);
 	}
 	
 	// resets the game

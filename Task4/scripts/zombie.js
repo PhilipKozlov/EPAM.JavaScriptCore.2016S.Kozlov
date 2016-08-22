@@ -16,9 +16,10 @@ var zombie = function(config){
 	obj.finishPosition = config.finishPosition;
 	obj.$lane = config.$lane;
 	obj.isDead = false;
-	
+	obj.maxHealth = 100;
 	// to temporarly store zombie default speed based on zombie type
 	var tempSpeed;
+	//var maxHealth = obj.health;
 
 	// creates jQuery zombie
 	obj.create = function(){
@@ -29,7 +30,7 @@ var zombie = function(config){
 			obj.$zombie.css({
 				'left' : obj.currentPosition + 'px'
 			});
-			obj.$zombie.text(obj.health).css('color', 'red');
+			obj.$zombie.text('100%').css('color', 'red');
 			obj.$lane.append(obj.$zombie);
 		}
 	}
@@ -65,7 +66,8 @@ var zombie = function(config){
 			obj.kill();
 		}
 		if (obj.health >= 0){
-			obj.$zombie.text(obj.health);
+			var health = Math.round((obj.health * 100) / obj.maxHealth);
+			obj.$zombie.text(health + '%');
 		}
 	}
 	
