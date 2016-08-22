@@ -9,6 +9,7 @@
 zombie.michael = function(config){
 	var obj = zombie.call(this, config);
 	obj.name = 'michael';
+	obj.movementSpeed = -2;
 	obj.create();
 	return obj;
 }

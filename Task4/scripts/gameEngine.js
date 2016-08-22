@@ -22,8 +22,8 @@ $(function(){
 	var zombieMoveTimeout = 100;
 	var resourceMoveTimeout = 100;
 	var projectileMoveTimeout = 100;
-	var zombieMinTimeout = 100;
-	var zombieMaxTimeout = 1000;
+	var zombieMinTimeout = 1000;
+	var zombieMaxTimeout = 2000;
 	var resourceTimeout = 1500;
 	var projectileTimeout = 2500;
 	
@@ -39,11 +39,11 @@ $(function(){
 	// default configs
 	var zombieConfig = { movementSpeed : -1, startPosition : $field.position().left + $field.width() - 60, finishPosition : $field.position().left, damage : 100};
 	var plantConfig = {};
-	var projectileConfig = { movementSpeed : 20, damage : 50};
+	var projectileConfig = { movementSpeed : 20, damage : 25};
 	var resourceConfig = { movementSpeed : 10, $field : $field, top : $field.position().top};
 	
 	var resourceCount = 0;
-	var resourceIncrement = 20;
+	var resourceIncrement = 25;
 	var resourcesForPlant = 100;
 
 	$('#btnStart').on('click', Start);

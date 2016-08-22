@@ -26,6 +26,7 @@ var zombie = function(config){
 			obj.$zombie.css({
 				'left' : obj.currentPosition + 'px'
 			});
+			obj.$zombie.text(obj.health).css('color', 'red');
 			obj.$lane.append(obj.$zombie);
 		}
 	}
@@ -59,6 +60,9 @@ var zombie = function(config){
 		obj.health -= damage;
 		if (obj.health <= 0){
 			obj.kill();
+		}
+		if (obj.health >= 0){
+			obj.$zombie.text(obj.health);
 		}
 	}
 	

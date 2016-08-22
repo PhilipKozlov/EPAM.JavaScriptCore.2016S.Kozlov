@@ -9,6 +9,7 @@
 zombie.strong = function(config){
 	var obj = zombie.call(this, config);
 	obj.name = 'strong';
+	obj.health = 150;
 	obj.create();
 	return obj;
 }
