@@ -16,6 +16,9 @@ var zombie = function(config){
 	obj.finishPosition = config.finishPosition;
 	obj.$lane = config.$lane;
 	obj.isDead = false;
+	
+	// to temporarly store zombie default speed based on zombie type
+	var tempSpeed;
 
 	// creates jQuery zombie
 	obj.create = function(){
@@ -71,7 +74,6 @@ var zombie = function(config){
 		obj.$zombie.on('death', func);
 	}
 	
-	var tempSpeed;
 	obj.slow = function(speed){
 		tempSpeed = obj.movementSpeed;
 		obj.movementSpeed = speed;
