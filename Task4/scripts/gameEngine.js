@@ -27,7 +27,7 @@ $(function(){
 	var resourceTimeout = 1500;
 	var projectileTimeout = 2500;
 	
-	// time interwal for slowing zombies, in ms
+	// time interval for slowing zombies, in ms
 	var slowTime = 200;
 	
 	// handles
