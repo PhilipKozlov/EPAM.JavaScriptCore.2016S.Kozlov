@@ -28,7 +28,7 @@ $(function(){
 	var projectileTimeout = 2500;
 	
 	// time interval for slowing zombies, in ms
-	var slowTime = 200;
+	var slowTime = 2000;
 	
 	// handles
 	var zombieHandles = [];
@@ -49,21 +49,24 @@ $(function(){
 	var resourceIncrement = 25;
 	var resourcesForPlant = 100;
 
-	$('#btnStart').on('click', Start);
-	$('#btnReset').addClass('disabled');
-	$('#btnSlow').on('click', Slow);
-	$('#btnSlow').addClass('disabled');
+	var $btnReset = $('#btnReset');
+	var $btnStart = $('#btnStart');
+	var $btnSlow = $('#btnSlow');
+	$btnStart.on('click', Start);
+	$btnReset.addClass('disabled');
+	$btnSlow.addClass('disabled');
 	
 	// starts the game
 	function Start(){
 		$('.field-line').on('click', GeneratePlant);
 		resourceHandles.push(setTimeout(GenerateResource, resourceTimeout));
 		zombieHandles.push(setTimeout(GenerateZombie, random(zombieMinTimeout, zombieMaxTimeout)));
-		$('#btnStart').addClass('disabled');
-		$('#btnStart').off();
-		$('#btnReset').on('click', Reset);
-		$('#btnReset').removeClass('disabled');
-		$('#btnSlow').removeClass('disabled');
+		$btnStart.addClass('disabled');
+		$btnStart.off();
+		$btnReset.on('click', Reset);
+		$btnReset.removeClass('disabled');
+		$btnSlow.removeClass('disabled');
+		$btnSlow.on('click', Slow);
 	}
 	
 	// resets the game
@@ -73,10 +76,10 @@ $(function(){
 		ResetGame();
 		resourceCount = 0;
 		$('.resources p').text(resourceCount);
-		$('#btnStart').removeClass('disabled');
-		$('#btnStart').on('click', Start);
-		$('#btnReset').off();
-		$('#btnReset').addClass('disabled');
+		$btnStart.removeClass('disabled');
+		$btnStart.on('click', Start);
+		$btnReset.off();
+		$btnReset.addClass('disabled');
 	}
 
 	// adds new plant when clicking on the lane
@@ -212,8 +215,8 @@ $(function(){
 			zombies[i].slow(baseZombie.movementSpeed);
 		}
 		setTimeout(SetNormalSpeed, slowTime);
-		$('#btnSlow').addClass('disabled');
-		$('#btnSlow').off();
+		$btnSlow.addClass('disabled');
+		$btnSlow.off();
 	}
 	
 	// set normal zombie speed based on zombie type
@@ -221,8 +224,8 @@ $(function(){
 		for (var i = 0; i < zombies.length; i++){
 			zombies[i].restoreSpeed();
 		}
-		$('#btnSlow').removeClass('disabled');
-		$('#btnSlow').on('click', Slow);
+		$btnSlow.removeClass('disabled');
+		$btnSlow.on('click', Slow);
 	}
 	
 	// resets the game
