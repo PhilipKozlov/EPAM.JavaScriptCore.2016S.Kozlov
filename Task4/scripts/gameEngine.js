@@ -43,7 +43,7 @@ $(function(){
 	var ageingHandles = [];
 	
 	var $field = $('#field');
-	var $fieldLane = $('.field-line');
+	var $fieldLanes = $('.field-line');
 	var $gameOver = $('.game-over');
 	var $resourceDisplay = $('.resources p');
 	
@@ -74,7 +74,7 @@ $(function(){
 	
 	// starts the game
 	function Start(){
-		$('.field-line').on('click', GeneratePlant);
+		$fieldLanes.on('click', GeneratePlant);
 		resourceHandles.push(setTimeout(GenerateResource, resourceTimeout));
 		zombieHandles.push(setTimeout(GenerateZombie, random(zombieMinTimeout, zombieMaxTimeout)));
 		$btnStart.addClass('disabled');
@@ -87,7 +87,7 @@ $(function(){
 	
 	// resets the game
 	function Reset(){
-		$('.field-line').off();
+		$fieldLanes.off();
 		$gameOver.hide();
 		ResetGame();
 		resourceCount = 0;
@@ -158,7 +158,7 @@ $(function(){
 	
 	// creates a new resource
 	function GenerateResource(){
-		resourceConfig.left = random($fieldLane.position().left, $fieldLane.position().left + $field.width() - 60);
+		resourceConfig.left = random($fieldLanes.position().left, $fieldLanes.position().left + $field.width() - 60);
 		var resource = new resourceTypes[0](resourceConfig);
 		resource.onClick(function(){
 			resourceCount += resourceIncrement;
@@ -180,7 +180,7 @@ $(function(){
 	function GenerateZombie(){
 		var rnd = random(0, zombieTypes.length - 1);
 		var laneNumber = random(0, numberOfLanes - 1);
-		var $lane = $($('.field-line')[laneNumber]);
+		var $lane = $($fieldLanes[laneNumber]);
 		zombieConfig.$lane = $lane;
 		var zombie = new zombieTypes[rnd](zombieConfig);
 		// register GameOver function to execute on zombie`s death
@@ -336,6 +336,10 @@ $(function(){
 		
 		for (var i = 0; i < resourceHandles.length; i++){
 			clearTimeout(resourceHandles[i]);
+		}
+		
+		for (var i = 0; i < ageingHandles.length; i++){
+			clearTimeout(ageingHandles[i]);
 		}
 		
 		for (var i = 0; i < zombies.length; i++){
