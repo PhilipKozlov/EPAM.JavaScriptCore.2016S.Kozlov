@@ -220,7 +220,7 @@ $(function(){
 		}
 	}
 	
-	// cleares the field and displays 'Gmae over' message
+	// cleares the field and displays 'Game over' message
 	function GameOver(){
 		ResetGame();
 		$gameOver.show();
