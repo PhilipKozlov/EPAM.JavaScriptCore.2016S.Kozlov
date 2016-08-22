@@ -19,7 +19,6 @@ var zombie = function(config){
 	obj.maxHealth = 100;
 	// to temporarly store zombie default speed based on zombie type
 	var tempSpeed;
-	//var maxHealth = obj.health;
 
 	// creates jQuery zombie
 	obj.create = function(){
