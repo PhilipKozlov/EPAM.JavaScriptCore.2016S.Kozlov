@@ -11,7 +11,7 @@ var zombie = function(config){
 	obj.name = '';
 	obj.health = 100;
 	obj.damage = config.damage || 100;
-	obj.movementSpeed = config.movementSpeed || 1;
+	obj.movementSpeed = config.movementSpeed || -1;
 	obj.currentPosition = config.startPosition;
 	obj.finishPosition = config.finishPosition;
 	obj.$lane = config.$lane;
@@ -69,6 +69,16 @@ var zombie = function(config){
 	// creates custom 'death' event for zombie
 	obj.onDeath = function(func){
 		obj.$zombie.on('death', func);
+	}
+	
+	var tempSpeed;
+	obj.slow = function(speed){
+		tempSpeed = obj.movementSpeed;
+		obj.movementSpeed = speed;
+	}
+	
+	obj.restoreSpeed = function(){
+		obj.movementSpeed = tempSpeed;
 	}
 	
 	return obj;

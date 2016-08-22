@@ -27,6 +27,9 @@ $(function(){
 	var resourceTimeout = 1500;
 	var projectileTimeout = 2500;
 	
+	// time interwal for slowing zombies, in ms
+	var slowTime = 200;
+	
 	// handles
 	var zombieHandles = [];
 	var resourceHandles = [];
@@ -48,6 +51,8 @@ $(function(){
 
 	$('#btnStart').on('click', Start);
 	$('#btnReset').addClass('disabled');
+	$('#btnSlow').on('click', Slow);
+	$('#btnSlow').addClass('disabled');
 	
 	// starts the game
 	function Start(){
@@ -58,6 +63,7 @@ $(function(){
 		$('#btnStart').off();
 		$('#btnReset').on('click', Reset);
 		$('#btnReset').removeClass('disabled');
+		$('#btnSlow').removeClass('disabled');
 	}
 	
 	// resets the game
@@ -197,6 +203,26 @@ $(function(){
 		ResetGame();
 		$gameOver.show();
 		$gameOver.text('Game Over');
+	}
+	
+	// slows all zombies for a period of time in ms
+	function Slow(time){
+		var baseZombie = new zombie(zombieConfig);
+		for (var i = 0; i < zombies.length; i++){
+			zombies[i].slow(baseZombie.movementSpeed);
+		}
+		setTimeout(SetNormalSpeed, slowTime);
+		$('#btnSlow').addClass('disabled');
+		$('#btnSlow').off();
+	}
+	
+	// set normal zombie speed based on zombie type
+	function SetNormalSpeed(){
+		for (var i = 0; i < zombies.length; i++){
+			zombies[i].restoreSpeed();
+		}
+		$('#btnSlow').removeClass('disabled');
+		$('#btnSlow').on('click', Slow);
 	}
 	
 	// resets the game
