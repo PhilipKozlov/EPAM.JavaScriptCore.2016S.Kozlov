@@ -82,10 +82,6 @@ $(function(){
 		$btnReset.removeClass('disabled');
 		$btnSlow.removeClass('disabled');
 		$btnSlow.on('click', Slow);
-		/*$btnExplode.on('click', Explode);
-		$btnExplode.removeClass('disabled');
-		$btnAge.on('click', Age);
-		$btnAge.removeClass('disabled');*/
 	}
 	
 	// resets the game
@@ -129,7 +125,7 @@ $(function(){
 	function GenerateProjectile($lane, plant){
 		projectileConfig.$lane = $lane;
 		projectileConfig.startPosition = plant.currentPosition + 60;
-		var  projectile = new projectileTypes[0](projectileConfig);
+		var projectile = new projectileTypes[0](projectileConfig);
 		projectiles.push(projectile);
 		projectileHandles.push(setTimeout(function(){ GenerateProjectile($lane, plant); }, projectileTimeout));
 		projectileHandles.push(setTimeout(function(){ MoveProjectile(projectile, $lane); }, projectileMoveTimeout));
@@ -154,6 +150,7 @@ $(function(){
 		if (!projectile.isRemoved){
 			projectileHandles.push(setTimeout(function(){ MoveProjectile(projectile, $lane); }, projectileMoveTimeout));
 		}
+		
 		// remove all 'dead' zombies
 		zombies = $.grep(zombies, function(e){ 
 			 return !e.isDead; 
@@ -234,6 +231,7 @@ $(function(){
 		for (var i = 0; i < zombies.length; i++){
 			zombies[i].slow(baseZombie.movementSpeed);
 		}
+		
 		setTimeout(SetNormalSpeed, slowTime);
 		$btnSlow.addClass('disabled');
 		$btnSlow.off();
@@ -244,6 +242,7 @@ $(function(){
 		for (var i = 0; i < zombies.length; i++){
 			zombies[i].restoreSpeed();
 		}
+		
 		$btnSlow.removeClass('disabled');
 		$btnSlow.on('click', Slow);
 	}
@@ -258,11 +257,8 @@ $(function(){
 			if (resourceCount <= 0){
 				resourceCount = 0;
 			}
+			
 			ResetButtons();
-			/*if (resourceCount < resourcesForExplosion){
-				$btnExplode.off();
-				$btnExplode.addClass('disabled');
-			}*/
 			$('.resources p').text(resourceCount);
 		}
 	}
@@ -276,11 +272,8 @@ $(function(){
 			if (resourceCount <= 0){
 				resourceCount = 0;
 			}
+			
 			ResetButtons();
-			/*if (resourceCount < resourcesForAging){
-				$btnAge.off();
-				$btnAge.addClass('disabled');
-			}*/
 			$('.resources p').text(resourceCount);
 			$btnAge.addClass('disabled');
 			$btnAge.off();
@@ -291,6 +284,7 @@ $(function(){
 		for (var i = 0; i < zombies.length; i++){
 			zombies[i].hit(agingDecrement);
 		}
+		
 		ageingHandle = setTimeout(AgeHelper, agingTimeout);
 	}
 	
@@ -308,6 +302,7 @@ $(function(){
 			$btnExplode.on('click', Explode);
 			$btnExplode.removeClass('disabled');
 		}
+		
 		if (resourceCount >= resourcesForAging){
 			$btnAge.off;
 			$btnAge.on('click', Age);
@@ -321,6 +316,7 @@ $(function(){
 			$btnExplode.off();
 			$btnExplode.addClass('disabled');
 		}
+		
 		if (resourceCount < resourcesForAging){
 			$btnAge.off();
 			$btnAge.addClass('disabled');
@@ -332,21 +328,27 @@ $(function(){
 		for (var i = 0; i < zombieHandles.length; i++){
 			clearTimeout(zombieHandles[i]);
 		}
+		
 		for (var i = 0; i < projectileHandles.length; i++){
 			clearTimeout(projectileHandles[i]);
 		}
+		
 		for (var i = 0; i < resourceHandles.length; i++){
 			clearTimeout(resourceHandles[i]);
 		}
+		
 		for (var i = 0; i < zombies.length; i++){
 			zombies[i].kill();
 		}
+		
 		for (var i = 0; i < plants.length; i++){
 			plants[i].die();
 		}
+		
 		for (var i = 0; i < projectiles.length; i++){
 			projectiles[i].remove();
 		}
+		
 		for (var i = 0; i < resources.length; i++){
 			resources[i].remove();
 		}
