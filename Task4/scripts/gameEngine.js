@@ -45,6 +45,7 @@ $(function(){
 	var $field = $('#field');
 	var $fieldLane = $('.field-line');
 	var $gameOver = $('.game-over');
+	var $resourceDisplay = $('.resources p');
 	
 	// default configs
 	var zombieConfig = { movementSpeed : -1, startPosition : $field.position().left + $field.width() - 60, finishPosition : $field.position().left, damage : 100};
@@ -90,7 +91,7 @@ $(function(){
 		$gameOver.hide();
 		ResetGame();
 		resourceCount = 0;
-		$('.resources p').text(resourceCount);
+		$resourceDisplay.text(resourceCount);
 		$btnStart.removeClass('disabled');
 		$btnStart.on('click', Start);
 		$btnReset.off();
@@ -101,11 +102,8 @@ $(function(){
 	function GeneratePlant(){
 		if (resourceCount >= resourcesForPlant){
 			resourceCount -= resourcesForPlant;
-			if (resourceCount <= 0){
-				resourceCount = 0;
-			}
-			
-			$('.resources p').text(resourceCount);
+			CheckResources();
+			$resourceDisplay.text(resourceCount);
 			var $lane = $(this);
 			var lanePlants = plants.filter(function(el){ return el.$lane[0] == $($lane)[0]; });
 			var startPosition = Math.max.apply(null, lanePlants.map(function(obj){ return obj.currentPosition; })) + 60;
@@ -164,12 +162,12 @@ $(function(){
 		var resource = new resourceTypes[0](resourceConfig);
 		resource.onClick(function(){
 			resourceCount += resourceIncrement;
-			$('.resources p').text(resourceCount);
+			$resourceDisplay.text(resourceCount);
 			SetButtons();
 		});
 		resources.push(resource);
 		resourceHandles.push(setTimeout(GenerateResource, resourceTimeout));
-		resourceHandles.push(setTimeout(function(){ MoveResource(resource);}, resourceMoveTimeout));
+		resourceHandles.push(setTimeout(function(){ MoveResource(resource); }, resourceMoveTimeout));
 	}
 	
 	// moves one resource 
@@ -255,12 +253,9 @@ $(function(){
 				zombies[i].hit(explosionDamage);
 			}
 			resourceCount -= resourcesForExplosion;
-			if (resourceCount <= 0){
-				resourceCount = 0;
-			}
-			
+			CheckResources();
 			ResetButtons();
-			$('.resources p').text(resourceCount);
+			$resourceDisplay.text(resourceCount);
 		}
 	}
 	
@@ -270,12 +265,9 @@ $(function(){
 			AgeHelper();
 			setTimeout(StopAging, agingTime);
 			resourceCount -= resourcesForAging;
-			if (resourceCount <= 0){
-				resourceCount = 0;
-			}
-			
+			CheckResources();
 			ResetButtons();
-			$('.resources p').text(resourceCount);
+			$resourceDisplay.text(resourceCount);
 			$btnAge.addClass('disabled');
 			$btnAge.off();
 		}
@@ -326,6 +318,12 @@ $(function(){
 		}
 	}
 	
+	function CheckResources(){
+		if (resourceCount <= 0){
+			resourceCount = 0;
+		}
+	}
+	
 	// resets the game
 	function ResetGame(){
 		for (var i = 0; i < zombieHandles.length; i++){
@@ -361,5 +359,6 @@ $(function(){
 		plants = [];
 		projectiles = [];
 		resourceHandles = [];
+		ageingHandles = [];
 	}
 });
