@@ -40,7 +40,7 @@ $(function(){
 	var zombieHandles = [];
 	var resourceHandles = [];
 	var projectileHandles = [];
-	var ageingHandle;
+	var ageingHandles = [];
 	
 	var $field = $('#field');
 	var $fieldLane = $('.field-line');
@@ -118,6 +118,7 @@ $(function(){
 			var plant = new plantTypes[0](plantConfig);
 			plants.push(plant);
 			GenerateProjectile($lane, plant);
+			ResetButtons();
 		}
 	}
 	
@@ -285,12 +286,14 @@ $(function(){
 			zombies[i].hit(agingDecrement);
 		}
 		
-		ageingHandle = setTimeout(AgeHelper, agingTimeout);
+		ageingHandles.push(setTimeout(AgeHelper, agingTimeout));
 	}
 	
 	// stops zombies aging
 	function StopAging(){
-		clearTimeout(ageingHandle);
+		for (var i = 0; i < ageingHandles.length; i++){
+			clearTimeout(ageingHandles[i]);
+		}
 		$btnAge.removeClass('disabled');
 		$btnAge.on('click', Age);
 	}
@@ -304,7 +307,7 @@ $(function(){
 		}
 		
 		if (resourceCount >= resourcesForAging){
-			$btnAge.off;
+			$btnAge.off();
 			$btnAge.on('click', Age);
 			$btnAge.removeClass('disabled');
 		}
