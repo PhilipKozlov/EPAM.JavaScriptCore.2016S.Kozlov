@@ -82,10 +82,10 @@ $(function(){
 		$btnReset.removeClass('disabled');
 		$btnSlow.removeClass('disabled');
 		$btnSlow.on('click', Slow);
-		$btnExplode.on('click', Explode);
+		/*$btnExplode.on('click', Explode);
 		$btnExplode.removeClass('disabled');
 		$btnAge.on('click', Age);
-		$btnAge.removeClass('disabled');
+		$btnAge.removeClass('disabled');*/
 	}
 	
 	// resets the game
@@ -167,6 +167,7 @@ $(function(){
 		resource.onClick(function(){
 			resourceCount += resourceIncrement;
 			$('.resources p').text(resourceCount);
+			SetButtons();
 		});
 		resources.push(resource);
 		resourceHandles.push(setTimeout(GenerateResource, resourceTimeout));
@@ -257,6 +258,11 @@ $(function(){
 			if (resourceCount <= 0){
 				resourceCount = 0;
 			}
+			ResetButtons();
+			/*if (resourceCount < resourcesForExplosion){
+				$btnExplode.off();
+				$btnExplode.addClass('disabled');
+			}*/
 			$('.resources p').text(resourceCount);
 		}
 	}
@@ -270,6 +276,11 @@ $(function(){
 			if (resourceCount <= 0){
 				resourceCount = 0;
 			}
+			ResetButtons();
+			/*if (resourceCount < resourcesForAging){
+				$btnAge.off();
+				$btnAge.addClass('disabled');
+			}*/
 			$('.resources p').text(resourceCount);
 			$btnAge.addClass('disabled');
 			$btnAge.off();
@@ -288,6 +299,32 @@ $(function(){
 		clearTimeout(ageingHandle);
 		$btnAge.removeClass('disabled');
 		$btnAge.on('click', Age);
+	}
+	
+	// enables certain actions when you have enough resources
+	function SetButtons(){
+		if (resourceCount >= resourcesForExplosion){
+			$btnExplode.off();
+			$btnExplode.on('click', Explode);
+			$btnExplode.removeClass('disabled');
+		}
+		if (resourceCount >= resourcesForAging){
+			$btnAge.off;
+			$btnAge.on('click', Age);
+			$btnAge.removeClass('disabled');
+		}
+	}
+	
+	// disables actions based on collected resources
+	function ResetButtons(){
+		if (resourceCount < resourcesForExplosion){
+			$btnExplode.off();
+			$btnExplode.addClass('disabled');
+		}
+		if (resourceCount < resourcesForAging){
+			$btnAge.off();
+			$btnAge.addClass('disabled');
+		}
 	}
 	
 	// resets the game
